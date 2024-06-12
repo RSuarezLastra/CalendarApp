@@ -1,5 +1,6 @@
-import { addHours } from 'date-fns';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
+import { addHours, differenceInSeconds } from 'date-fns';
+import Swal from 'sweetalert2';
 import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Modal from 'react-modal';
@@ -23,13 +24,22 @@ Modal.setAppElement('#root');
 export const CalendarModal = () => {
 
     const [open, setOpen] = useState(true);
+    const [formSubmitted, setformSubmitted] = useState(false);
 
     const [formState, setFormState] = useState({
         title: '',
         notes: '',
         startDate: new Date(),
         endDate: addHours(new Date(), 2),
-    })
+    });
+
+    const titleClass = useMemo(() => {
+        if (!formSubmitted) return '';
+
+        return (formState.title.length > 0)
+            ? ''
+            : 'is-invalid';
+    }, [formState.title, formSubmitted])
 
     const onCloseModal = () => setOpen(false);
     const onOpenModal = () => setOpen(true);
@@ -48,6 +58,24 @@ export const CalendarModal = () => {
         })
     }
 
+    const onSubtmit = (e) => {
+        e.preventDefault();
+        setformSubmitted(true);
+
+        const difference = differenceInSeconds(formState.endDate, formState.startDate);
+        if (isNaN(difference) || difference <= 0) {
+            Swal.fire('Fechas incorrectas', 'Verifique las fechas ingresadas', 'error');
+            return
+        };
+
+        if (formState.title.length === 0) {
+            Swal.fire('El titulo es requerido', 'Ingrese un titulo', 'error');
+            return
+        };
+
+        console.log(formState);
+    }
+
 
     return (
         <Modal
@@ -61,7 +89,7 @@ export const CalendarModal = () => {
 
             <h1> Nuevo evento </h1>
             <hr />
-            <form className="container">
+            <form className="container" onSubmit={onSubtmit}>
 
                 <div className="form-group mb-2">
                     <label >Fecha y hora inicio</label>
@@ -95,7 +123,7 @@ export const CalendarModal = () => {
                     <label>Titulo y notas</label>
                     <input
                         type="text"
-                        className="form-control"
+                        className={`form-control ${titleClass}`}
                         placeholder="Título del evento"
                         name="title"
                         value={formState.title}
