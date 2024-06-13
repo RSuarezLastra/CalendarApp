@@ -1,8 +1,8 @@
+import { useState } from 'react';
 import { Calendar } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css'
 import { localizer, getMessagesEs } from '../../helpers';
-import { CalendarEvent, CalendarModal, Navbar } from "../"
-import { useState } from 'react';
+import { CalendarEvent, CalendarModal, Navbar, FabAddNew } from "../"
 import { useUiStore, useCalendarStore } from '../../hooks';
 
 
@@ -57,6 +57,7 @@ export const CalendarPage = () => {
             />
 
             <CalendarModal/>
+            <FabAddNew/>
         </>
     )
 }
