@@ -48,9 +48,7 @@ export const CalendarModal = () => {
         if (activeEvent !== null) {
             setFormState({ ...activeEvent });
         }
-    }, [activeEvent])
-
-
+    }, [activeEvent]);
 
     const onInputChange = ({ target }) => {
         setFormState({
@@ -63,7 +61,7 @@ export const CalendarModal = () => {
         setFormState({
             ...formState,
             [changing]: event
-        })
+        });
     }
 
     const onSubtmit = async(e) => {
@@ -73,12 +71,12 @@ export const CalendarModal = () => {
         const difference = differenceInSeconds(formState.end, formState.start);
         if (isNaN(difference) || difference <= 0) {
             Swal.fire('Fechas incorrectas', 'Verifique las fechas ingresadas', 'error');
-            return
+            return;
         };
 
         if (formState.title.length === 0) {
             Swal.fire('El titulo es requerido', 'Ingrese un titulo', 'error');
-            return
+            return;
         };
 
         await startSavingEvent(formState);
