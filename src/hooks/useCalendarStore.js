@@ -1,21 +1,26 @@
 import { useDispatch, useSelector } from "react-redux";
 import { onAddNewEvent, onDeleteEvent, onSetActiveEvent, onUpdateEvent } from "../store";
+import { calendatApi } from "../api/calendarApi";
 
 export const useCalendarStore = () => {
 
     const dispatch = useDispatch();
     const { events, activeEvent } = useSelector(state => state.calendar);
+    const { user } = useSelector(state => state.auth);
 
     const setActiveEvent = (calendarEvent) => {
         dispatch(onSetActiveEvent(calendarEvent));
     }
 
     const startSavingEvent = async (calendarEvent) => {
-        // TODO: lelgar al backend
+
         if (calendarEvent._id) {
-            dispatch(onUpdateEvent({...calendarEvent}));
+            dispatch(onUpdateEvent({ ...calendarEvent }));
         } else {
-            dispatch(onAddNewEvent({...calendarEvent, _id: new Date().getTime()}));
+
+            const { data } = await calendatApi.post('/events', calendarEvent);
+            
+            dispatch(onAddNewEvent({ ...calendarEvent, id: data.event.id, user }));
         }
     }
 
@@ -28,7 +33,7 @@ export const useCalendarStore = () => {
         events,
         activeEvent,
         hasEventSelected: !!activeEvent,
-        
+
         //?  METHODS
         setActiveEvent,
         startSavingEvent,

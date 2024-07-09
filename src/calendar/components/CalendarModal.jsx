@@ -53,7 +53,7 @@ export const CalendarModal = () => {
     const onInputChange = ({ target }) => {
         setFormState({
             ...formState,
-            [target.name]: [target.value]
+            [target.name]: target.value
         });
     }
 
@@ -78,7 +78,7 @@ export const CalendarModal = () => {
             Swal.fire('El titulo es requerido', 'Ingrese un titulo', 'error');
             return;
         };
-
+        console.log(formState);
         await startSavingEvent(formState);
         closeDateModal();
         setformSubmitted(false);
