@@ -9,3 +9,12 @@ export const calendatApi = axios.create({
 });
 
 
+calendatApi.interceptors.request.use(config => {
+
+    config.headers = {
+        ...config.headers,
+        'x-token': localStorage.getItem('token')
+    }
+
+    return config;
+});
