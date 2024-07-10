@@ -18,7 +18,7 @@ export const calendarSlice = createSlice({
         },
         onUpdateEvent: (state, { payload }) => {
             state.events = state.events.map(event => {
-                if (event._id === payload._id) return payload;
+                if (event.id === payload.id) return payload;
 
                 return event;
             })
@@ -31,7 +31,6 @@ export const calendarSlice = createSlice({
         },
         onLoadEvent: (state, { payload = [] }) => {
             state.isLoadingEvents = false;
-            // state.events = payload;
             payload.forEach(event => {
                 const exist = state.events.some(storeEvent => storeEvent.id === event.id);
                 if (!exist) {

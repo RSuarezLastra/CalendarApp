@@ -38,7 +38,7 @@ export const useAuthStore = () => {
             localStorage.setItem('token-init-date', new Date().getTime());
             dispatch(onLogin({ uid: data.uid, name: data.name }));
         } catch (error) {
-            dispatch(onLogout(error.response.data?.msj));
+            dispatch(onLogout(error.response.data?.msg));
 
             setTimeout(() => {
                 dispatch(clearError())
