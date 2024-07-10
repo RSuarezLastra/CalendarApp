@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-import { calendatApi } from "../api/calendarApi";
+import { calendarApi } from "../api/calendarApi";
 import { clearError, onLogin, onLogout } from "../store";
 
 
@@ -13,7 +13,7 @@ export const useAuthStore = () => {
 
     const startLogin = async ({ email, password }) => {
         try {
-            const { data } = await calendatApi.post('/auth', { email, password });
+            const { data } = await calendarApi.post('/auth', { email, password });
 
             localStorage.setItem('token', data.token);
             localStorage.setItem('token-init-date', new Date().getTime());
@@ -32,7 +32,7 @@ export const useAuthStore = () => {
 
     const startRegister = async ({ name, email, password }) => {
         try {
-            const { data } = await calendatApi.post('/auth/register', { name, email, password });
+            const { data } = await calendarApi.post('/auth/register', { name, email, password });
 
             localStorage.setItem('token', data.token);
             localStorage.setItem('token-init-date', new Date().getTime());
@@ -52,7 +52,7 @@ export const useAuthStore = () => {
         if (!token) return dispatch(onLogout());
 
         try {
-            const { data } = await calendatApi.get('/auth/renew');
+            const { data } = await calendarApi.get('/auth/renew');
 
             localStorage.setItem('token', data.token);
             localStorage.setItem('token-init-date', new Date().getTime());
